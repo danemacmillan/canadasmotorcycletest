@@ -1,0 +1,12 @@
+## Generic files to ignore.
+
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+## Project related files to ignore.
+
+setup.*
+
