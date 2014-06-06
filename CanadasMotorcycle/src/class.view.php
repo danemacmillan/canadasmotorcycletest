@@ -20,8 +20,8 @@ class View
     {
         $this->viewData = array();
 
-        $this->getViewData();
-
+        // Get and set view data.
+        $this->provisionView();
     }
 
     /**
@@ -37,14 +37,23 @@ class View
 
         foreach ($cartData as $cartItem) {
             $htmlProductList .= '
-                <li id="cart-id-' . $cartItem['cart_id'] . '">
-                    <img src="' . $cartItem['image_url'] . '" alt="' . $cartItem['name'] . '" />
-                    <div class="cart-product-info" id="product-id-' . $cartItem['product_id'] . '">
-                        <h3 class="cart-product-name"><a href="' . $cartItem['image_url'] . '">' . $cartItem['name'] . '</a></h3>
-                        <div class="cart-product-description">' . $cartItem['description'] . '</div>
-                        <div class="cart-product-price">$' . $cartItem['price'] . '</div>
-                        <label class="cart-product-quantity">Quantity: <input type="number" min="0" max="99" value="' . $cartItem['quantity'] . '" /></label>
-                    </div>
+                <li id="product-id-' . $cartItem['product_id'] . '">
+                    <form method="post" action="?update" id="cart-id-' . $cartItem['cart_id'] . '">
+                        <div class="cart-product-info">
+                            <img src="' . $cartItem['image_url'] . '" alt="' . $cartItem['name'] . '" />
+                            <h3 class="cart-product-name">
+                                <a href="' . $cartItem['image_url'] . '">' . $cartItem['name'] . '</a>
+                            </h3>
+                            <div class="cart-product-description">' . $cartItem['description'] . '</div>
+                            <div class="cart-product-price">$' . $cartItem['price'] . '</div>
+                            <label class="cart-product-quantity">
+                                Quantity: <input name="quantity" type="number" min="0" max="99" value="' . $cartItem['quantity'] . '" />
+                            </label>
+                            <input type="hidden" name="cart_id" value="' . $cartItem['cart_id'] . '" />
+                            <input type="hidden" name="product_id" value="' . $cartItem['cart_id'] . '" />
+                            <input type="submit" name="submit_quantity" value="Update quantity" class="button button-inline" />
+                        </div>
+                    </form>
                 </li>';
         }
 
@@ -74,48 +83,47 @@ class View
     }
 
     /**
-     * @return string
+     * Get and set cart data for the view.
      */
-    public function render()
+    public function provisionView()
     {
-        return '<h1>HEYEYEHE</h1>';
+        $model = new Model();
+        $cartData = $model->getCartData(App::$userID);
+
+        // Get and set basic view data.
+        $viewData = array(
+            'cart_count' => $model->getCartQuantity($cartData),
+            'cart_subtotal' => $model->getCartSubtotal($cartData),
+            'cart_bag' => $this->buildHtmlProductList($cartData)
+        );
+        $this->setViewData($viewData);
+
+        // Get and set calculation view data.
+        $cartFinalPrices = $model->getFinalPrices($this->viewData['cart_subtotal']);
+        $this->setViewData($cartFinalPrices);
     }
 
     /**
      * Grab contents of a view file.
      *
-     * @param $view
+     * @param string $view Name of view to render.
      */
-    public function fetchView($view)
+    public function render($view)
     {
+        // Capture all outbut from buffer.
         ob_start();
+
+        // Bring in the template.
         include('view.' . $view . '.tpl');
+
+        // Assign and parse view.
         $viewContents = ob_get_clean();
-
-
-        $viewContents = $this->injectViewData($viewContents);
-
-
-        return $viewContents;
-    }
-
-    public function getViewData()
-    {
-        $model = new Model();
-        $cartData = $model->getCartData(1);
-
-        $cartCount = 0;
-        $cartSubTotal = 0;
-        foreach ($cartData as $cartItem) {
-            $cartCount += $cartItem['quantity'];
-            $cartSubTotal += $cartItem['price'];
+        if (strlen($viewContents)) {
+            $viewContents = $this->injectViewData($viewContents);
         }
 
-        $this->setViewData(array(
-            'cart_count' => $cartCount,
-            'cart_subtotal' => $cartSubTotal,
-            'cart_bag' => $this->buildHtmlProductList($cartData)
-        ));
+        // Render out contents to browser.
+        echo $viewContents;
     }
 
     /**
@@ -124,7 +132,7 @@ class View
      * The values will be cleaned, and the array will be merged with the
      * $this->viewData property, which is used for render.
      *
-     * @param $viewData
+     * @param array $viewData View data from model.
      */
     public function setViewData($viewData)
     {
@@ -132,6 +140,4 @@ class View
             $this->viewData = array_merge($this->viewData, $viewData);
         }
     }
-
-
 }

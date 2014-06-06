@@ -14,6 +14,21 @@ namespace CanadasMotorcycle;
 class App
 {
     /**
+     * @var $dispatcherWhitelist Whitelist of available dispatcher endpoints.
+     */
+    private $dispatcherWhitelist;
+
+    /**
+     * @var $requestMethod Method of the current request.
+     */
+    private $requestMethod;
+
+    /**
+     * @var int $userID User ID of example user's cart.
+     */
+    public static $userID;
+
+    /**
      * @var Model $model The Model object.
      */
     private $model;
@@ -27,16 +42,146 @@ class App
      * Get things rolling.
      */
     public function __construct() {
+
+        // Set whitelist for GET and POST requests.
+        $this->dispatcherWhitelist = array(
+            'get' => array(
+                'cart'
+            ),
+            'post' => array(
+                'update'
+            )
+        );
+
+        // There is only one user for this test. Developing an authentication layer
+        // is way beyond the scope of this test.
+        self::$userID = 1;
+
+        // Instantiate model and view.
         $this->model = new Model();
         $this->view = new View();
     }
 
+    /**
+     * Dispatcher to determine where and how requests should be processed.
+     */
+    private function dispatcher()
+    {
+        $this->requestMethod = strtolower($_SERVER['REQUEST_METHOD']);
+
+        $endpoints = $this->dispatcherWhitelist[$this->requestMethod];
+        $totalEndpoints = count($endpoints);
+        if ($totalEndpoints > 1) {
+            trigger_error('Only one endpoint can be specified per request.', E_USER_NOTICE);
+        }
+
+        // Only allow one endpoint per request. Obviously this is very
+        // simplified.
+        $endpoint = reset($endpoints);
+
+        // Set default endpoint, if none provided.
+        if (!$endpoint) {
+            $endpoint = 'cart';
+        }
+
+        if (in_array($endpoint, $this->dispatcherWhitelist[$this->requestMethod])) {
+            switch ($endpoint) {
+                // This will only accept requests over GET.
+                case 'cart':
+                    $this->view->render($endpoint);
+                    break;
+                // This will only accept requests over POST.
+                case 'update':
+                    if ($this->handleUpdateCartQuantityPost()) {
+                        $this->redirect('?cart');
+                    }
+                    break;
+            }
+        }
+    }
+
+    public function redirect($location)
+    {
+        header("Location: $location");
+        exit;
+    }
+
+    /**
+     * Only these values are allowed in a cart POST quantity update.
+     *
+     * Each value is named, with their corresponding filter task. Essentially
+     * is a regex store to validate all the incoming values against.
+     *
+     * @return array
+     */
+    private function validationStore()
+    {
+        return array(
+            'cart_id' => '/^[0-9]{1,11}$/',
+            'product_id' => '/^[0-9]{1,11}$/',
+            'quantity' => '/^[0-9]{1,2}$/',
+            'submit_quantity' => '/^$/' // Effectively removing it.
+        );
+    }
+
+    /**
+     * Process and validate the post form values coming in for the cart update.
+     *
+     * @param array $postData Array of form POST data.
+     */
+    private function handleUpdateCartQuantityPost()
+    {
+        $postData = $this->request('post');
+        $validationStore = $this->validationStore();
+
+        // Walk through array and validate its data.
+        array_walk($postData, function (&$value, $key) use ($validationStore) {
+            if (!preg_match($validationStore[$key], $value)) {
+                $value = '';
+            }
+        });
+
+        // Clear out any invalid data, but keep int 0. Without a callback, this
+        // would clear out the empty strings set in the previous check AND
+        // int 0.
+        $postData = array_filter($postData, function ($value) {
+            return ($value !== '');
+        });
+
+        // If all is well, send the cleaned up data to the model. The minus one
+        // is for the submit button that is never wanted.
+        $updated = false;
+        if (count($postData) == count($validationStore) - 1) {
+            $updated = $this->model->updateProductQuantityInCart($postData);
+        }
+
+        return $updated;
+    }
+
+    /**
+     * Wrapper for retrieving the request data from superglobals.
+     *
+     * @param string $requestMethod Is either `get` or `post`.
+     *
+     * @return array
+     */
+    private function request($requestMethod)
+    {
+        $requestData = array();
+
+        switch (strtolower($requestMethod)) {
+            case 'get':
+                $requestData = $_GET;
+                break;
+            case 'post':
+                $requestData = $_POST;
+                break;
+        }
+
+        return $requestData;
+    }
 
     public function start() {
-
-        //echo $this->view->render();
-
-        echo $this->view->fetchView('cart');
-
+        $this->dispatcher();
     }
 }

@@ -12,7 +12,22 @@ namespace CanadasMotorcycle;
  */
 class Model
 {
+    // Constants //
+
+
+    /*
+     * General sales tax percentage.
+     */
+    const GST = 5;
+
+    /**
+     * Quebec sales tax percentage.
+     */
+    const QST = 9.975;
+
+
     // Properties //
+
 
     /**
      * @var string Name of database.
@@ -60,6 +75,13 @@ class Model
         if (strlen($string)) {
             return preg_replace('/[^a-z]/i', '', $string);
         }
+    }
+
+    private function calculateTax($subTotal, $taxPercentage)
+    {
+        return ($subTotal > 0)
+            ? round($subTotal * ($taxPercentage / 100), 2)
+            : 0;
     }
 
     /**
@@ -161,6 +183,78 @@ class Model
     }
 
     /**
+     * Return all the data in a cart for a user.
+     */
+    public function getCartData($userID)
+    {
+        $stmt = $this->dbConnection->query("
+            SELECT
+              *
+            FROM
+              $this->tableNameCart as c
+            LEFT JOIN
+              $this->tableNameProducts as p
+                ON c.product_id = p.product_id
+            WHERE
+              c.user_id = $userID
+        ");
+
+        $cartData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        if ($cartData) {
+            return $cartData;
+        }
+    }
+
+    /**
+     * @param $cartData
+     * @return int
+     */
+    public function getCartSubtotal($cartData)
+    {
+        $cartSubTotal = 0;
+        foreach ($cartData as $cartItem) {
+            $cartSubTotal += $cartItem['price'] * $cartItem['quantity'];
+        }
+
+        return ($cartSubTotal)
+            ? $cartSubTotal
+            : 0;
+    }
+
+    public function getCartQuantity($cartData)
+    {
+        $cartQuantity = 0;
+        foreach ($cartData as $cartItem) {
+            $cartQuantity += $cartItem['quantity'];
+        }
+
+        return ($cartQuantity)
+            ? $cartQuantity
+            : 0;
+    }
+
+    /**
+     * Calculate the final price of all items in cart, with taxes and total.
+     *
+     * @param int $subTotal The subtotal of all purchases.
+     *
+     * @return array Parsed for view.
+     */
+    public function getFinalPrices($subTotal)
+    {
+        $cartGst = $this->calculateTax($subTotal, self::GST);
+        $cartQst = $this->calculateTax($subTotal, self::QST);
+        $cartTotal = $subTotal + $cartGst + $cartQst;
+
+        return array(
+            'cart_gst' => $cartGst,
+            'cart_qst' => $cartQst,
+            'cart_total' => $cartTotal
+        );
+    }
+
+    /**
      * Generate acceptably formatted table name.
      *
      * Resulting table name will be all lowercase, with distinct words joined
@@ -205,7 +299,7 @@ class Model
 
             $products = array(
                 array(
-                    ':name' => 'Shoei RF-120000000',
+                    ':name' => 'Shoei RF-1200',
                     ':description' => 'Light Weight Multi-Ply Matrix AIM+ Shell Construction',
                     ':price' => 512.99,
                     ':image_url' => 'http://www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/330x/9df78eab33525d08d6e5fb8d27136e95/0070/3837/shoei_rf1200_helmet_solid_black_rollover.jpg'
@@ -274,8 +368,8 @@ class Model
                             ");
 
                             $stmt->execute(array(
-                                ':product_id' => $product['product_id'],
-                                ':quantity' => mt_rand(0, 5)
+                                'product_id' => $product['product_id'],
+                                'quantity' => mt_rand(1, 5)
                             ));
 
                             if ($stmt->rowCount()) {
@@ -341,33 +435,32 @@ class Model
      *
      * @param $productID
      * @param $quantity
+     *
+     * @return bool True if updated, false on failure.
      */
-    private function updateProductQuantityInCart($productID, $quantity)
+    public function updateProductQuantityInCart($postData)
     {
+        // Add static userID to array. (Static for test.)
+        $postData['user_id'] = App::$userID;
 
-    }
+        $updated = false;
+        try {
+            $stmt = $this->dbConnection->prepare("
+                UPDATE
+                    $this->tableNameCart
+                SET
+                  quantity = :quantity
+                WHERE
+                  cart_id = :cart_id
+                  AND  user_id = :user_id
+                  AND product_id = :product_id
+            ");
 
-    /**
-     * Return all the data in a cart for a user.
-     */
-    public function getCartData($userID)
-    {
-        $stmt = $this->dbConnection->query("
-            SELECT
-              *
-            FROM
-              $this->tableNameCart as c
-            LEFT JOIN
-              $this->tableNameProducts as p
-                ON c.product_id = p.product_id
-            WHERE
-              c.user_id = $userID
-        ");
-
-        $cartData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        if ($cartData) {
-            return $cartData;
+            $updated = $stmt->execute($postData);
+        } catch (\PDOException $ex) {
+            trigger_error('Cart quantity could not be updated.', E_USER_NOTICE);
         }
+
+        return $updated;
     }
 }

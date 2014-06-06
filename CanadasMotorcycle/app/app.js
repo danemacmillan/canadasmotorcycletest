@@ -2,7 +2,7 @@
  * Run stuff on load.
  */
 $(document).ready(function () {
-    // Because I'm a badass.
+    // 'Cause I'm a badass.
     'use strict';
 
     /**

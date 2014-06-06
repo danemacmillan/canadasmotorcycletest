@@ -1,9 +1,17 @@
-/* Basic reset. */
+/**
+ * Greedy reset.
+ */
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
+
+
+/**
+ * Set up basic styles and helpers.
+ */
 
 html, body {
     height: 100%;
@@ -12,16 +20,19 @@ html, body {
 html {
     font-family: 'Open Sans', sans-serif;
     font-size: 62.5%;
-    line-height: 1.75;
-    color: #000;
     background: #efefef url(//www.canadasmotorcycle.ca/skin/frontend/default/evolution/images/bg_body.jpg) repeat center center;
 }
 
 body {
-    font-size: 1.6rem;
     max-width: 1200px;
     margin: auto;
     padding: 0 40px;
+}
+
+body, input, textarea {
+    font-size: 1.6rem;
+    line-height: 1.75;
+    color: #000;
 }
 
 a {
@@ -57,6 +68,44 @@ hr {
 .clear {
     clear: both;
 }
+
+.button {
+    display: inline-block;
+    background-color: #9A1B1E;
+    border: 0;
+    border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+    text-shadow: 0 1px 1px #000;
+    border-bottom: 3px solid #000;
+}
+
+.button:hover {
+    box-shadow: 0 0 20px 10px #fff;
+}
+
+.button:active {
+    box-shadow: 0 0 10px 5px #fff, inset 0 0 10px 0 rgba(0, 0, 0, 0.50);
+    transform: scale(0.95);
+}
+
+.button-inline {
+    line-height: 1.75;
+    border: 0;
+    padding: 0 10px;
+}
+
+button {
+    display: block;
+    padding: 20px;
+    width: 100%;
+    font-size: 2.4rem;
+}
+
+
+/**
+ * Main content
+ */
 
 header {
     margin: 40px 5px;
@@ -102,19 +151,6 @@ header {
     z-index: 5;
 }
 
-/* Triangle to point to totals and counts. */
-/*.cart-bag:before {
-    content: '';
-    position: absolute;
-    margin: -13px -20px 0 0;
-    width: 0;
-    height: 0;
-    right: 0;
-    border-style: solid;
-    border-width: 30px 0 30px 20px;
-    border-color: transparent transparent transparent #fff;
-}*/
-
 .cart-bag-head {
     color: #999;
     padding: 0 40px 40px 40px;
@@ -148,7 +184,6 @@ header {
     transform: scale(1.25);
 }
 
-
 .cart-product-description {
     color: #999;
     margin: 10px 0;
@@ -159,10 +194,9 @@ header {
 }
 
 .cart-product-quantity input {
-    font-size: 1.6rem;
-    padding: 5px;
+    padding: 0 5px;
     width: 50px;
-    margin: 10px 0;
+    margin: 10px;
     box-shadow: none;
     border-radius: 2px;
     border: 1px solid #efefef;
@@ -223,29 +257,6 @@ header {
 .cart-total-big strong{
     font-size: 1.8rem;
     font-weight: bold;
-}
-
-button {
-    display: block;
-    background-color: #9A1B1E;
-    border: 0;
-    border-radius: 2px;
-    padding: 20px;
-    width: 100%;
-    color: #fff;
-    font-size: 2.4rem;
-    cursor: pointer;
-    text-shadow: 0 1px 1px #000;
-    border-bottom: 3px solid #000;
-}
-
-button:hover {
-    box-shadow: 0 0 20px 10px #fff;
-}
-
-button:active {
-    box-shadow: 0 0 10px 5px #fff, inset 0 0 10px 0 rgba(0, 0, 0, 0.50);
-    transform: scale(0.95);
 }
 
 footer {
