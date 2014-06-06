@@ -1,0 +1,254 @@
+/* Basic reset. */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+html {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 62.5%;
+    line-height: 1.75;
+    color: #000;
+    background: #efefef url(//www.canadasmotorcycle.ca/skin/frontend/default/evolution/images/bg_body.jpg) repeat center center;
+}
+
+body {
+    font-size: 1.6rem;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 40px;
+}
+
+a {
+    color: #9A1B1E;
+    text-decoration: none;
+    border-bottom: 2px solid #9A1B1E;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    text-shadow: 0 0 2px #fff;
+}
+
+a:active {
+    position: relative;
+    top: 2px;
+    border: 0;
+}
+
+ul, li {
+    list-style: none;
+}
+
+li {
+    display: block;
+    margin: 10px 0;
+}
+
+hr {
+    border: 1px solid #efefef;
+}
+
+.clear {
+    clear: both;
+}
+
+header {
+    margin: 40px 5px;
+}
+
+.logo {
+    display: inline-block;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    font-size: 0;
+    background: transparent url(//i.imgur.com/iIPaB5A.png) no-repeat;
+    width: 250px;
+    height: 63px;
+    background-size: 250px 63px;
+    float: left;
+    border: 0;
+}
+
+.logo-subtext {
+    display: inline-block;
+    line-height: 63px;
+    font-weight: bold;
+    margin: 0 0 0 20px;
+    font-style: italic;
+    color: #D4D6D6;
+    text-shadow: 0 0 2px #000, 0 0 2px #000, 0 0 2px #000, 0 0 2px #000, 0 0 2px #000, -20px 0 20px #fff;
+}
+
+.cart {
+    position: relative;
+    border-radius: 2px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 0 1px 0 #efefef;
+}
+
+.cart-bag {
+    width: 65%;
+    border: 1px solid #efefef;
+    background-color: #fff;
+    padding: 40px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Triangle to point to totals and counts. */
+/*.cart-bag:before {
+    content: '';
+    position: absolute;
+    margin: -13px -20px 0 0;
+    width: 0;
+    height: 0;
+    right: 0;
+    border-style: solid;
+    border-width: 30px 0 30px 20px;
+    border-color: transparent transparent transparent #fff;
+}*/
+
+.cart-bag-head {
+    color: #999;
+    padding: 0 40px 40px 40px;
+    border-bottom: 1px solid #efefef;
+    margin: 0 -40px;
+}
+
+.cart-bag-head .fa {
+    color: #999;
+    margin-right: 5px;
+}
+
+.cart-product-list li {
+    border-bottom: 1px solid #efefef;
+    clear: both;
+    overflow: hidden;
+    margin: 20px 0;
+    padding: 20px 0;
+}
+
+.cart-product-list img {
+    width: 200px;
+    float: left;
+    margin-right: 40px;
+    padding: 20px;
+    transition: all 0.2s ease;
+}
+
+.cart-product-list li:hover img {
+    -webkit-transform: scale(1.25);
+    transform: scale(1.25);
+}
+
+
+.cart-product-description {
+    color: #999;
+    margin: 10px 0;
+}
+
+.cart-product-quantity {
+    color: #999;
+}
+
+.cart-product-quantity input {
+    font-size: 1.6rem;
+    padding: 5px;
+    width: 50px;
+    margin: 10px 0;
+    box-shadow: none;
+    border-radius: 2px;
+    border: 1px solid #efefef;
+}
+
+
+.cart-wallet {
+    width: 35%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    box-shadow: -4px 0 4px -4px rgba(0, 0, 0, 0.05), inset 5px 0 5px -6px rgba(0, 0, 0, 0.20);
+    background-color: rgba(255, 255, 255, 0.40);
+    text-shadow: 0 0 2px #fff;
+
+}
+
+/* Triangle to point to totals and counts. */
+#follow-bar:before {
+    content: '';
+    position: absolute;
+    margin: 28px 0 0 -2px;
+    width: 0;
+    height: 0;
+    left: 0;
+    border-style: solid;
+    border-width: 30px 0 30px 20px;
+    border-color: transparent transparent transparent #fff;
+    z-index: 100;
+}
+
+.follow-bar-padding {
+    padding: 40px;
+}
+
+.cart-wallet-head {
+    font-size: 2.0rem;
+    font-weight: bold;
+}
+
+#cart-count {
+    padding: 0 0 0 5px;
+}
+
+.cart-wallet-content {
+    margin: 40px 0;
+    color: #999;
+}
+
+.cart-wallet-content strong {
+    font-weight: normal;
+    color: #000;
+    float: right;
+}
+
+.cart-total-big,
+.cart-total-big strong{
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+button {
+    display: block;
+    background-color: #9A1B1E;
+    border: 0;
+    border-radius: 2px;
+    padding: 20px;
+    width: 100%;
+    color: #fff;
+    font-size: 2.4rem;
+    cursor: pointer;
+    text-shadow: 0 1px 1px #000;
+    border-bottom: 3px solid #000;
+}
+
+button:hover {
+    box-shadow: 0 0 20px 10px #fff;
+}
+
+button:active {
+    box-shadow: 0 0 10px 5px #fff, inset 0 0 10px 0 rgba(0, 0, 0, 0.50);
+    transform: scale(0.95);
+}
+
+footer {
+    margin: 80px auto 40px auto;
+    text-align: center;
+}
