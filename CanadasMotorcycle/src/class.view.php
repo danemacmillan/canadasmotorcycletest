@@ -89,7 +89,7 @@ class View
     public function fetchView($view)
     {
         ob_start();
-        include('view.' . $view . '.tpl.php');
+        include('view.' . $view . '.tpl');
         $viewContents = ob_get_clean();
 
 
