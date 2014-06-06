@@ -37,21 +37,21 @@ class View
 
         foreach ($cartData as $cartItem) {
             $htmlProductList .= '
-                <li id="product-id-' . $cartItem['product_id'] . '">
-                    <form method="post" action="?update" id="cart-id-' . $cartItem['cart_id'] . '">
+                <li id="product-id-' . $this->cleanOutput($cartItem['product_id']) . '">
+                    <form method="post" action="?update" id="cart-id-' . $this->cleanOutput($cartItem['cart_id']) . '">
                         <div class="cart-product-info">
-                            <img src="' . $cartItem['image_url'] . '" alt="' . $cartItem['name'] . '" />
+                            <img src="' . $this->cleanOutput($cartItem['image_url']) . '" alt="' . $this->cleanOutput($cartItem['name']) . '" />
                             <h3 class="cart-product-name">
-                                <a href="' . $cartItem['image_url'] . '">' . $cartItem['name'] . '</a>
+                                <a href="' . $this->cleanOutput($cartItem['image_url']) . '">' . $this->cleanOutput($cartItem['name']) . '</a>
                             </h3>
-                            <div class="cart-product-description">' . $cartItem['description'] . '</div>
-                            <div class="cart-product-price">$' . $cartItem['price'] . '</div>
+                            <div class="cart-product-description">' . $this->cleanOutput($cartItem['description']) . '</div>
+                            <div class="cart-product-price">$' . $this->cleanOutput($cartItem['price']) . '</div>
                             <label class="cart-product-quantity">
-                                Quantity: <input name="quantity" type="number" min="0" max="99" value="' . $cartItem['quantity'] . '" />
+                                Quantity: <input name="quantity" type="number" min="0" max="99" value="' . $this->cleanOutput($cartItem['quantity']) . '" />
                             </label>
-                            <input type="hidden" name="cart_id" value="' . $cartItem['cart_id'] . '" />
-                            <input type="hidden" name="product_id" value="' . $cartItem['cart_id'] . '" />
-                            <input type="submit" name="submit_quantity" value="Update quantity" class="button button-inline" />
+                            <input type="hidden" name="cart_id" value="' . $this->cleanOutput($cartItem['cart_id']) . '" />
+                            <input type="hidden" name="product_id" value="' . $this->cleanOutput($cartItem['cart_id']) . '" />
+                            <input type="submit" name="submit_quantity" value="Update quantity" class="button button-inline no-js" />
                         </div>
                     </form>
                 </li>';
@@ -60,6 +60,11 @@ class View
         $htmlProductList .= '</ul>';
 
         return $htmlProductList;
+    }
+
+    private function cleanOutput($string)
+    {
+        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
 
     /**
@@ -84,8 +89,12 @@ class View
 
     /**
      * Get and set cart data for the view.
+     *
+     * @param bool $noBag If true, 'cart_bag' will be removed from return.
+     *
+     * @return array
      */
-    public function provisionView()
+    public function provisionView($noBag = false)
     {
         $model = new Model();
         $cartData = $model->getCartData(App::$userID);
@@ -101,6 +110,12 @@ class View
         // Get and set calculation view data.
         $cartFinalPrices = $model->getFinalPrices($this->viewData['cart_subtotal']);
         $this->setViewData($cartFinalPrices);
+
+        if ($noBag) {
+            unset($this->viewData['cart_bag']);
+        }
+
+        return $this->viewData;
     }
 
     /**

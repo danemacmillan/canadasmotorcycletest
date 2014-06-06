@@ -80,8 +80,8 @@ class Model
     private function calculateTax($subTotal, $taxPercentage)
     {
         return ($subTotal > 0)
-            ? round($subTotal * ($taxPercentage / 100), 2)
-            : 0;
+            ? $subTotal * ($taxPercentage / 100)
+            : 0.00;
     }
 
     /**
@@ -219,7 +219,7 @@ class Model
 
         return ($cartSubTotal)
             ? $cartSubTotal
-            : 0;
+            : 0.00;
     }
 
     public function getCartQuantity($cartData)
@@ -248,9 +248,10 @@ class Model
         $cartTotal = $subTotal + $cartGst + $cartQst;
 
         return array(
-            'cart_gst' => $cartGst,
-            'cart_qst' => $cartQst,
-            'cart_total' => $cartTotal
+            'cart_subtotal' => number_format($subTotal, 2, '.', ' '),
+            'cart_gst' => number_format($cartGst, 2, '.', ' '),
+            'cart_qst' => number_format($cartQst, 2, '.', ' '),
+            'cart_total' => number_format($cartTotal, 2, '.', ' ')
         );
     }
 

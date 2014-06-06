@@ -24,6 +24,11 @@ class App
     private $requestMethod;
 
     /**
+     * @var $isXhr Determine if requests is an XMLHttpRequest (asynchronous).
+     */
+    private $isXhr;
+
+    /**
      * @var int $userID User ID of example user's cart.
      */
     public static $userID;
@@ -68,6 +73,10 @@ class App
     private function dispatcher()
     {
         $this->requestMethod = strtolower($_SERVER['REQUEST_METHOD']);
+        $this->isXhr = (
+            (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']))
+            || (isset($_SERVER['X_REQUESTED_WITH']) && strtolower($_SERVER['X_REQUESTED_WITH']) == 'xmlhttprequest')
+        );
 
         $endpoints = $this->dispatcherWhitelist[$this->requestMethod];
         $totalEndpoints = count($endpoints);
@@ -93,7 +102,11 @@ class App
                 // This will only accept requests over POST.
                 case 'update':
                     if ($this->handleUpdateCartQuantityPost()) {
-                        $this->redirect('?cart');
+                        if ($this->isXhr) {
+                            echo json_encode($this->view->provisionView(true));
+                        } else {
+                            $this->redirect('?cart');
+                        }
                     }
                     break;
             }
