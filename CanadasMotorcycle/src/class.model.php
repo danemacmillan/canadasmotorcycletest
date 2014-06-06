@@ -324,10 +324,15 @@ class Model
         // Open DB connection.
         $this->connect();
 
+        // Create and populate the tables. Once complete, the project will
+        // output its own provision files, so these steps are not run again.
         $tablesCreated = $this->createTables();
-
         if ($tablesCreated) {
             $tablesPopulated = $this->populateTables();
+        }
+
+        if (!$tablesCreated || !$tablesPopulated) {
+            trigger_error("The app's database tables could not be setup", E_USER_NOTICE);
         }
     }
 
