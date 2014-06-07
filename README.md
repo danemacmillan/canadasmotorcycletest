@@ -35,7 +35,9 @@ process. Nevertheless, this codebase is very robust.
 to bloat this small test. This makes installing and running quite easy. The
 code is designed to mirror closely most typical MVC frameworks, but obviously
 less meaty. In addition, PHP is written according to formatting standards
-established by the `PHP-FIG` working group, and namely `PSR`s 1, 2, and 4.
+established by the `PHP-FIG` working group, and namely `PSR`s 1, 2, and 4. I
+did not bother with custom exception handling, as that is beyond the scope of
+this test.
 
 - Two database tables are created. They are effectively denormalized, to
 reduce redundancy. These tables are created once, then setup files are created,

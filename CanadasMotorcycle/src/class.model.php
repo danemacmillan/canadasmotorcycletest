@@ -169,7 +169,7 @@ class Model
 
                 $result_products = $this->dbConnection->exec($sql);
             } catch (\PDOException $ex) {
-                print_r($ex);
+                trigger_error('Products table could be not created', E_USER_NOTICE);
             }
 
             // Create cart table.
@@ -185,7 +185,7 @@ class Model
 
                 $result_cart = $this->dbConnection->exec($sql);
             } catch (\PDOException $ex) {
-                print_r($ex);
+                trigger_error('Cart table could not be created', E_USER_NOTICE);
             }
 
             // Tables created successfully. Return bool true and log this.
