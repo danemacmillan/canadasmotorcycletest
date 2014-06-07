@@ -51,7 +51,12 @@ handling asynchronous requests.
 are always in view. This is a great UX pattern for shopping carts.
 
 - The UI was designed to be very fresh feeling, spacious, and generally easy to
-look at.
+look at. In addition, the markup is written very semantically, so that users
+with screen readers can still make sense of it. This is also very important
+for SEO purposes. The DOCTYPE in use is HTML5, which means it can be very
+loose with validation; regardless, I've written it to be like valid XHTML5,
+which is a less common hybrid of XHTML 1.1 strict and HTML5. The CSS makes
+use of transitions and other version 3 eye candy.
 
 - This was not tested in IE, and for the purposes of this test demo, I could
 care less about it. Nevertheless, it should work just fine down to IE6
