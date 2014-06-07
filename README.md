@@ -9,8 +9,8 @@ https://hack.danemacmillan.com/canadasmotorcycletest. However, should you
 really want to install this, all you need to do is clone this repo, expose
 the `app` directory to the public on your server, and create a database in
 MySQL/Percona/MariaDB called `canadas_motorcycle`. When you first visit the
-index.php page, the dispatcher will take care of setting up the database tables
-&mdash;one for `products` and one for `cart`&mdash;and populating them with
+`index.php` page, the dispatcher will take care of setting up the database
+tables--one for `products` and one for `cart`--and populating them with
 test data.
 
 ## Requirements
