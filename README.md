@@ -34,7 +34,8 @@ process. Nevertheless, this codebase is very robust.
 - The backend is all natural. Meaning, there are no frameworks or CMS' in use
 to bloat this small test. This makes installing and running quite easy. The
 code is designed to mirror closely most typical MVC frameworks, but obviously
-less meaty.
+less meaty. In addition, PHP is written according to formatting standards
+established by the `PHP-FIG` working group, and namely `PSR`s 1, 2, and 4.
 
 - Two database tables are created. They are effectively denormalized, to
 reduce redundancy. These tables are created once, then setup files are created,
