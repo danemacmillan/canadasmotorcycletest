@@ -22,24 +22,24 @@ class App
     private $dispatcherWhitelist;
 
     /**
-     * @var $requestMethod Method of the current request.
-     */
-    private $requestMethod;
-
-    /**
      * @var $isXhr Determine if requests is an XMLHttpRequest (asynchronous).
      */
     private $isXhr;
 
     /**
-     * @var int $userID User ID of example user's cart.
-     */
-    public static $userID;
-
-    /**
      * @var Model $model The Model object.
      */
     private $model;
+
+    /**
+     * @var $requestMethod Method of the current request.
+     */
+    private $requestMethod;
+
+    /**
+     * @var int $userID User ID of example user's cart.
+     */
+    public static $userID;
 
     /**
      * @var View $view The View object.
@@ -61,8 +61,9 @@ class App
             )
         );
 
-        // There is only one user for this test. Developing an authentication layer
-        // is way beyond the scope of this test.
+        // There is only one user for this test. Developing an authentication
+        // layer is way beyond scope. So, for the sake of ease, everyone who
+        // accesses the demo, will be user 1.
         self::$userID = 1;
 
         // Instantiate model and view.
