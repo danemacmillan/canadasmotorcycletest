@@ -321,5 +321,6 @@ footer {
 }
 
 .error-note {
+    font-size: 1.2rem;
     text-shadow: 0 0 5px #fff;
 }
