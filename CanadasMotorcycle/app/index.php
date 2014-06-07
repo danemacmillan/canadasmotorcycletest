@@ -32,7 +32,7 @@ ini_set('track_errors', 1);
 
 // Define the database user and password.
 define('DB_NAME', 'canadas_motorcycle');
-define('DB_USER', 'root');
+define('DB_USER', 'cm');
 define('DB_PASSWORD', '');
 
 // There is only one user for this test. Developing an authentication layer
