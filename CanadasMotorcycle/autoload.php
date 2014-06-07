@@ -2,6 +2,8 @@
 /**
  * Quick autoloader for App. This is based off examples from PSR-4
  * documentation.
+ *
+ * @license http://opensource.org/licenses/MIT MIT
  */
 spl_autoload_register(function ($class)
 {

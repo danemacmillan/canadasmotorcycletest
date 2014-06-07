@@ -10,6 +10,7 @@ namespace CanadasMotorcycle;
  * easier, and avoid wasting time reinventing MVC.
  *
  * @author Dane MacMillan <work@danemacmillan.com>
+ * @license http://opensource.org/licenses/MIT MIT
  *
  * @package CanadasMotorcycle
  */
@@ -112,7 +113,7 @@ class App
                     } else {
                         // Not going to bother handling regular synchronous
                         // errors, other than redirecting back to the page.
-                        // That sort of exhaustiveness if beyond the scrope
+                        // That sort of exhaustiveness is beyond the scope
                         // of this test. Nevertheless, I did handle
                         // asynchronous errors, because everyone loves
                         // eye candy.
@@ -135,17 +136,17 @@ class App
 
         // Walk through array and validate its data.
         array_walk($postData, function (&$value, $key) use ($validationStore) {
-                if (!preg_match($validationStore[$key], $value)) {
-                    $value = '';
-                }
-            });
+            if (!preg_match($validationStore[$key], $value)) {
+                $value = '';
+            }
+        });
 
         // Clear out any invalid data, but keep int 0. Without a callback, this
         // would clear out the empty strings set in the previous check AND
         // int 0.
         $postData = array_filter($postData, function ($value) {
-                return ($value !== '');
-            });
+            return ($value !== '');
+        });
 
         // If all is well, send the cleaned up data to the model. The minus one
         // is for the submit button that is never wanted.

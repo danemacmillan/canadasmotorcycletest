@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Application Gateway
+ *
  * This app requires PHP 5.4 or later, due to use of lamdas, anonymous
  * functions, closures, and namespaces.
  *
@@ -14,6 +16,9 @@
  * goliath piece of code.
  *
  * @author Dane MacMillan <work@danemacmillan.com>
+ * @license http://opensource.org/licenses/MIT MIT
+ *
+ * @package CanadasMotorcycle
  */
 
 // For the purpose of this small example, the autoloader is always in the

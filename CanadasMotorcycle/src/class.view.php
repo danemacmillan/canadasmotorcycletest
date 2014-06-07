@@ -8,6 +8,7 @@ namespace CanadasMotorcycle;
  * This class takes care of parsing and rendering view data.
  *
  * @author Dane MacMillan <work@danemacmillan.com>
+ * @license http://opensource.org/licenses/MIT MIT
  *
  * @package CanadasMotorcycle
  */
@@ -99,14 +100,15 @@ class View
      */
     private function injectViewData($viewContents)
     {
-        $viewData = $this->viewData;
-
+        // Handlebars placeholders to search for.
         $viewKeys = array_map(function ($key) {
             return '{{' . $key . '}}';
-        }, array_keys($viewData)) ;
+        }, array_keys($this->viewData)) ;
 
-        $viewValues = array_values($viewData);
+        // Data to replace matches.
+        $viewValues = array_values($this->viewData);
 
+        // Replace all placeholders with data.
         $viewContents = str_ireplace($viewKeys, $viewValues, $viewContents);
 
         return $viewContents;

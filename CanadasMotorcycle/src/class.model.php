@@ -9,6 +9,7 @@ namespace CanadasMotorcycle;
  * populate it with dummy data upon first run.
  *
  * @author Dane MacMillan <work@danemacmillan.com>
+ * @license http://opensource.org/licenses/MIT MIT
  *
  * @package CanadasMotorcycle
  */
@@ -23,7 +24,7 @@ class Model
     const GST = 5;
 
     /**
-     * Quebec sales tax percentage.
+     * Quebec sales tax percentage (thumbsdown).
      */
     const QST = 9.975;
 
@@ -159,37 +160,37 @@ class Model
 
             // Create products table.
             try {
-                $sql = "CREATE TABLE $this->tableNameProducts(
-                    product_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(100) NOT NULL,
-                    description VARCHAR(250) NULL,
-                    price DECIMAL(6,2) NULL,
-                    image_url VARCHAR(250) NOT NULL
-                );";
-
-                $result_products = $this->dbConnection->exec($sql);
+                $resultProducts = $this->dbConnection->exec("
+                    CREATE TABLE $this->tableNameProducts(
+                        product_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(100) NOT NULL,
+                        description VARCHAR(250) NULL,
+                        price DECIMAL(6,2) NULL,
+                        image_url VARCHAR(250) NOT NULL
+                    );
+                ");
             } catch (\PDOException $ex) {
                 trigger_error('Products table could be not created', E_USER_NOTICE);
             }
 
             // Create cart table.
             try {
-                $sql = "CREATE TABLE $this->tableNameCart(
-                    cart_id INT(11) AUTO_INCREMENT PRIMARY KEY,
-                    user_id INT(11) NOT NULL DEFAULT 1,
-                    product_id INT(11) NOT NULL,
-                    quantity INT(11) NOT NULL DEFAULT 0,
-                    KEY user_id (user_id),
-                    KEY product_id (product_id)
-                );";
-
-                $result_cart = $this->dbConnection->exec($sql);
+                $resultCart = $this->dbConnection->exec("
+                    CREATE TABLE $this->tableNameCart(
+                        cart_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                        user_id INT(11) NOT NULL DEFAULT 1,
+                        product_id INT(11) NOT NULL,
+                        quantity INT(11) NOT NULL DEFAULT 0,
+                        KEY user_id (user_id),
+                        KEY product_id (product_id)
+                    );
+                ");
             } catch (\PDOException $ex) {
                 trigger_error('Cart table could not be created', E_USER_NOTICE);
             }
 
             // Tables created successfully. Return bool true and log this.
-            if (isset($result_products) && isset($result_cart)) {
+            if (isset($resultProducts) && isset($resultCart)) {
                 $tablesCreated = true;
                 // Generate setup file to prevent this from happening again.
                 file_put_contents($tableCreatedTmpFile, '');
@@ -199,6 +200,25 @@ class Model
         }
 
         return $tablesCreated;
+    }
+
+    /**
+     * Formats a given price.
+     *
+     * This makes sure that there are always two decimal places, and the number
+     * is formatted to match our locale, such as spaces between thousands, and
+     * period for separator between dollars and cents.
+     *
+     * @param float $price The cost of something.
+     * @return float
+     */
+    private function formatPrice($price)
+    {
+        if ($price) {
+            $price = number_format($price, 2, '.', ' ');
+        }
+
+        return $price;
     }
 
     /**
@@ -242,10 +262,10 @@ class Model
         $cartTotal = $subTotal + $cartGst + $cartQst;
 
         return array(
-            'cart_subtotal' => number_format($subTotal, 2, '.', ' '),
-            'cart_gst' => number_format($cartGst, 2, '.', ' '),
-            'cart_qst' => number_format($cartQst, 2, '.', ' '),
-            'cart_total' => number_format($cartTotal, 2, '.', ' ')
+            'cart_subtotal' => $this->formatPrice($subTotal),
+            'cart_gst' => $this->formatPrice($cartGst),
+            'cart_qst' => $this->formatPrice($cartQst, 2),
+            'cart_total' => $this->formatPrice($cartTotal)
         );
     }
 
@@ -272,6 +292,7 @@ class Model
      * Calculate the cart quantity.
      *
      * @param array $cartData The cart data.
+     *
      * @return int
      */
     public function getCartQuantity($cartData)
@@ -293,6 +314,10 @@ class Model
      * by underscores. Example:
      *
      *      `canadas_motorcycle_products`
+     *
+     * @param string @tableName The name of a table, before prefixing it.
+     *
+     * @return string Prefixed table name.
      */
     private function getFullTableName($tableName)
     {
@@ -486,7 +511,7 @@ class Model
         try {
             $stmt = $this->dbConnection->prepare("
                 UPDATE
-                    $this->tableNameCart
+                  $this->tableNameCart
                 SET
                   quantity = :quantity
                 WHERE

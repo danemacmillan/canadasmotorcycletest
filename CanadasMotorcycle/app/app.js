@@ -2,6 +2,7 @@
  * Run some stuff on document ready.
  *
  * @author Dane MacMillan <work@danemacmillan.com>
+ * @license http://opensource.org/licenses/MIT MIT
  *
  * @package CanadasMotorcycle
  */

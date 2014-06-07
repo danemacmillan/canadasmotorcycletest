@@ -75,3 +75,7 @@ should be just fine. Every other popular browser was successfully tested
 
 He's a pretty fly guy. "Motorcycles are super cool," is something he says
 constantly.
+
+---
+
+This test demo is licensed under MIT (http://opensource.org/licenses/MIT).
