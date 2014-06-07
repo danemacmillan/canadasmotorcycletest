@@ -5,17 +5,29 @@ namespace CanadasMotorcycle;
 /**
  * Class View.
  *
- * Abstract away the view.
+ * This class takes care of parsing and rendering view data.
+ *
+ * @author Dane MacMillan <work@danemacmillan.com>
  *
  * @package CanadasMotorcycle
  */
 class View
 {
+    // Properties //
+
+
     /**
      * @var array $viewData Contains array of view data to be inserted.
      */
     private $viewData;
 
+
+    // Methods //
+
+
+    /**
+     * Provision the view data.
+     */
     public function __construct()
     {
         $this->viewData = array();
@@ -27,7 +39,7 @@ class View
     /**
      * Pass this a list of products, and it will build the HTML.
      *
-     * @param array $productList List of products.
+     * @param array $cartData List of products.
      *
      * @return string Html.
      */
@@ -62,6 +74,17 @@ class View
         return $htmlProductList;
     }
 
+    /**
+     * Clean any customer-facing data.
+     *
+     * This is a precaution to take in case some exploitative strings got
+     * saved to the DB and are now looking for a way out. Obviously, for
+     * the purposes of this test, this is very generic.
+     *
+     * @param string $string Content to clean.
+     *
+     * @return string
+     */
     private function cleanOutput($string)
     {
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
@@ -71,6 +94,8 @@ class View
      * Replaces all handlebars-type placeholders in the view with live data.
      *
      * @param string $viewContents Raw HTML.
+     *
+     * @return string
      */
     private function injectViewData($viewContents)
     {
@@ -90,7 +115,10 @@ class View
     /**
      * Get and set cart data for the view.
      *
-     * @param bool $noBag If true, 'cart_bag' will be removed from return.
+     * In addition, this is called as the payload for asynchronous JSON
+     * responses. Its return just needs to be encoded properly.
+     *
+     * @param bool $noBag If true, 'cart_bag' will be removed from array.
      *
      * @return array
      */
@@ -102,19 +130,22 @@ class View
         // Get and set basic view data.
         $viewData = array(
             'cart_count' => $model->getCartQuantity($cartData),
-            'cart_subtotal' => $model->getCartSubtotal($cartData),
-            'cart_bag' => $this->buildHtmlProductList($cartData)
+            'cart_subtotal' => $model->getCartSubtotal($cartData)
         );
+
+        // Not necessary for all calls.
+        if (!$noBag) {
+            $viewData['cart_bag'] = $this->buildHtmlProductList($cartData);
+        }
+
+        // Set these first pieces of data.
         $this->setViewData($viewData);
 
         // Get and set calculation view data.
         $cartFinalPrices = $model->getFinalPrices($this->viewData['cart_subtotal']);
         $this->setViewData($cartFinalPrices);
 
-        if ($noBag) {
-            unset($this->viewData['cart_bag']);
-        }
-
+        // Only used when asynchronous JSON dumps are needed.
         return $this->viewData;
     }
 
@@ -125,7 +156,7 @@ class View
      */
     public function render($view)
     {
-        // Capture all outbut from buffer.
+        // Start capturing all output from buffer.
         ob_start();
 
         // Bring in the template.

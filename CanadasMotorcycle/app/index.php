@@ -2,18 +2,27 @@
 
 /**
  * This app requires PHP 5.4 or later, due to use of lamdas, anonymous
- * functions, and namespaces.
+ * functions, closures, and namespaces.
+ *
+ * Understand that this app is a stripped down version. There are no user
+ * tables, and a number of advanced techniques from MVC have been watered
+ * down. In addition, some filtering and checks were ignored for the sake
+ * of scope.
+ *
+ * I chose to avoid any frameworks or CMS' for ease of installation, and to
+ * demonstrate personal knowledge of PHP. The test is not supposed to be a
+ * goliath piece of code.
+ *
+ * @author Dane MacMillan <work@danemacmillan.com>
  */
 
 // For the purpose of this small example, the autoloader is always in the
 // parent directory.
 require dirname(__DIR__) . '/autoload.php';
 
-//print_r(scandir(dirname(__DIR__).'/app'));
-
 // Track errors.
 error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0); // 1 for development.
 ini_set('track_errors', 1);
 
 // Define the database user and password.

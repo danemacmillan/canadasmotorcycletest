@@ -9,6 +9,8 @@ namespace CanadasMotorcycle;
  * act as the controller, but it's not a controller. This is to make the setup
  * easier, and avoid wasting time reinventing MVC.
  *
+ * @author Dane MacMillan <work@danemacmillan.com>
+ *
  * @package CanadasMotorcycle
  */
 class App
@@ -46,8 +48,8 @@ class App
     /**
      * Get things rolling.
      */
-    public function __construct() {
-
+    public function __construct()
+    {
         // Set whitelist for GET and POST requests.
         $this->dispatcherWhitelist = array(
             'get' => array(
@@ -107,40 +109,24 @@ class App
                         } else {
                             $this->redirect('?cart');
                         }
+                    } else {
+                        // Not going to bother handling regular synchronous
+                        // errors, other than redirecting back to the page.
+                        // That sort of exhaustiveness if beyond the scrope
+                        // of this test. Nevertheless, I did handle
+                        // asynchronous errors, because everyone loves
+                        // eye candy.
+                        $this->redirect('?error');
                     }
                     break;
             }
         }
     }
 
-    public function redirect($location)
-    {
-        header("Location: $location");
-        exit;
-    }
-
-    /**
-     * Only these values are allowed in a cart POST quantity update.
-     *
-     * Each value is named, with their corresponding filter task. Essentially
-     * is a regex store to validate all the incoming values against.
-     *
-     * @return array
-     */
-    private function validationStore()
-    {
-        return array(
-            'cart_id' => '/^[0-9]{1,11}$/',
-            'product_id' => '/^[0-9]{1,11}$/',
-            'quantity' => '/^[0-9]{1,2}$/',
-            'submit_quantity' => '/^$/' // Effectively removing it.
-        );
-    }
-
     /**
      * Process and validate the post form values coming in for the cart update.
      *
-     * @param array $postData Array of form POST data.
+     * @return bool
      */
     private function handleUpdateCartQuantityPost()
     {
@@ -149,17 +135,17 @@ class App
 
         // Walk through array and validate its data.
         array_walk($postData, function (&$value, $key) use ($validationStore) {
-            if (!preg_match($validationStore[$key], $value)) {
-                $value = '';
-            }
-        });
+                if (!preg_match($validationStore[$key], $value)) {
+                    $value = '';
+                }
+            });
 
         // Clear out any invalid data, but keep int 0. Without a callback, this
         // would clear out the empty strings set in the previous check AND
         // int 0.
         $postData = array_filter($postData, function ($value) {
-            return ($value !== '');
-        });
+                return ($value !== '');
+            });
 
         // If all is well, send the cleaned up data to the model. The minus one
         // is for the submit button that is never wanted.
@@ -169,6 +155,15 @@ class App
         }
 
         return $updated;
+    }
+
+    /**
+     * @param string $location Location to redirect to.
+     */
+    public function redirect($location)
+    {
+        header("Location: $location");
+        exit;
     }
 
     /**
@@ -194,7 +189,26 @@ class App
         return $requestData;
     }
 
-    public function start() {
+    public function start()
+    {
         $this->dispatcher();
+    }
+
+    /**
+     * Only these values are allowed in a cart POST quantity update.
+     *
+     * Each value is named, with their corresponding filter task. Essentially
+     * is a regex store to validate all the incoming values against.
+     *
+     * @return array
+     */
+    private function validationStore()
+    {
+        return array(
+            'cart_id' => '/^[0-9]{1,11}$/',
+            'product_id' => '/^[0-9]{1,11}$/',
+            'quantity' => '/^[0-9]{1,2}$/',
+            'submit_quantity' => '/^$/' // Effectively removing it.
+        );
     }
 }

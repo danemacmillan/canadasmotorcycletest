@@ -8,6 +8,8 @@ namespace CanadasMotorcycle;
  * Abstract away the calls to PDO. In addition, create the table in the DB and
  * populate it with dummy data upon first run.
  *
+ * @author Dane MacMillan <work@danemacmillan.com>
+ *
  * @package CanadasMotorcycle
  */
 class Model
@@ -15,7 +17,7 @@ class Model
     // Constants //
 
 
-    /*
+    /**
      * General sales tax percentage.
      */
     const GST = 5;
@@ -30,14 +32,14 @@ class Model
 
 
     /**
+     * @var PDO $connection The connection to the database.
+     */
+    private $dbConnection;
+
+    /**
      * @var string Name of database.
      */
     private $dbName;
-
-    /**
-     * @var string $dbUser The DB user.
-     */
-    private $dbUser;
 
     /**
      * @var string $dbPassword The DB password.
@@ -45,21 +47,29 @@ class Model
     private $dbPassword;
 
     /**
-     * @var PDO $connection The connection to the database.
+     * @var string $dbUser The DB user.
      */
-    private $dbConnection;
+    private $dbUser;
 
-    private $tableNameProducts;
+    /**
+     * @var string #tableNameCart The name of the cart table.
+     */
     private $tableNameCart;
-    private $tableNameApp;
+
+    /**
+     * @var string $tableNameProducts The name of the products table.
+     */
+    private $tableNameProducts;
 
 
     // Methods //
 
 
+    /**
+     * Setup the app's model.
+     */
     public function __construct()
     {
-        // Setup the app's Model (database related).
         $this->setup();
     }
 
@@ -77,6 +87,14 @@ class Model
         }
     }
 
+    /**
+     * Calculate an arbitrary amount of tax against a number.
+     *
+     * @param float $subTotal The subtotal.
+     * @param float $taxPercentage The tax percentage.
+     *
+     * @return float
+     */
     private function calculateTax($subTotal, $taxPercentage)
     {
         return ($subTotal > 0)
@@ -89,8 +107,9 @@ class Model
      *
      * This will effectively render a camelCase into ['camel', 'Case'].
      *
-     * @param $string
-     * @return array
+     * @param string $string A string to be split.
+     *
+     * @return array Individual words.
      */
     private function capitalStringSplit($string)
     {
@@ -128,7 +147,7 @@ class Model
     }
 
     /**
-     * Create the relevant tables for this app. This only called once.
+     * Create the relevant tables for this app. This is only called once.
      */
     private function createTables()
     {
@@ -187,6 +206,8 @@ class Model
      */
     public function getCartData($userID)
     {
+        $cartData = array();
+
         $stmt = $this->dbConnection->query("
             SELECT
               *
@@ -199,39 +220,12 @@ class Model
               c.user_id = $userID
         ");
 
-        $cartData = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        if ($cartData) {
-            return $cartData;
-        }
-    }
-
-    /**
-     * @param $cartData
-     * @return int
-     */
-    public function getCartSubtotal($cartData)
-    {
-        $cartSubTotal = 0;
-        foreach ($cartData as $cartItem) {
-            $cartSubTotal += $cartItem['price'] * $cartItem['quantity'];
+        $dataDump = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        if ($dataDump) {
+            $cartData = $dataDump;
         }
 
-        return ($cartSubTotal)
-            ? $cartSubTotal
-            : 0.00;
-    }
-
-    public function getCartQuantity($cartData)
-    {
-        $cartQuantity = 0;
-        foreach ($cartData as $cartItem) {
-            $cartQuantity += $cartItem['quantity'];
-        }
-
-        return ($cartQuantity)
-            ? $cartQuantity
-            : 0;
+        return $cartData;
     }
 
     /**
@@ -253,6 +247,43 @@ class Model
             'cart_qst' => number_format($cartQst, 2, '.', ' '),
             'cart_total' => number_format($cartTotal, 2, '.', ' ')
         );
+    }
+
+    /**
+     * Calculate the cart subtotal.
+     *
+     * @param array $cartData The cart data.
+     *
+     * @return float
+     */
+    public function getCartSubtotal($cartData)
+    {
+        $cartSubTotal = 0;
+        foreach ($cartData as $cartItem) {
+            $cartSubTotal += $cartItem['price'] * $cartItem['quantity'];
+        }
+
+        return ($cartSubTotal)
+            ? $cartSubTotal
+            : 0.00;
+    }
+
+    /**
+     * Calculate the cart quantity.
+     *
+     * @param array $cartData The cart data.
+     * @return int
+     */
+    public function getCartQuantity($cartData)
+    {
+        $cartQuantity = 0;
+        foreach ($cartData as $cartItem) {
+            $cartQuantity += $cartItem['quantity'];
+        }
+
+        return ($cartQuantity)
+            ? $cartQuantity
+            : 0;
     }
 
     /**
@@ -290,14 +321,16 @@ class Model
     /**
      * Populate these tables with test data. This is only called once.
      */
-    private function populateTables() {
-
+    private function populateTables()
+    {
         $tablesPopulated = false;
         $tablesPopulatedTmpFile = '../setup.tables-populated';
 
         // If tables are already populated, do not run again.
         if (!file_exists($tablesPopulatedTmpFile)) {
 
+            // Static test data. This is typically dynamic content, but for the
+            // purposes of this test, DATA IS NEEDED!
             $products = array(
                 array(
                     ':name' => 'Shoei RF-1200',
@@ -344,16 +377,20 @@ class Model
                 }
 
             } catch(\PDOException $ex) {
-                print_r($ex);
+                trigger_error('Products could not be inserted.', E_USER_NOTICE);
             }
 
             // Make sure products were all inserted correctly before inserting data
             // in the cart.
             if ($productsInserted) {
-                $stmt = $this->dbConnection->query("
-                    SELECT * FROM $this->tableNameProducts
-                ");
-                $dataProducts = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                try {
+                    $stmt = $this->dbConnection->query("
+                        SELECT * FROM $this->tableNameProducts
+                    ");
+                    $dataProducts = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                } catch (\PDOException $ex) {
+                    trigger_error('Products table could not be queried', E_USER_NOTICE);
+                }
 
                 $cartInserted = false;
                 $cartProductsToInsert = 3;
@@ -376,7 +413,9 @@ class Model
                             if ($stmt->rowCount()) {
                                 $cartProductsInserted++;
                             }
-                        } catch (\PDOException $ex) {}
+                        } catch (\PDOException $ex) {
+                            trigger_error('Cart data could not be populated.', E_USER_NOTICE);
+                        }
                     } else {
                         break;
                     }
@@ -434,8 +473,7 @@ class Model
     /**
      * Update the quantity of a product in the cart.
      *
-     * @param $productID
-     * @param $quantity
+     * @param array $postData Data straight from form POST.
      *
      * @return bool True if updated, false on failure.
      */

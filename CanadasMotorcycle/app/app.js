@@ -1,5 +1,9 @@
 /**
- * Run stuff on load.
+ * Run some stuff on document ready.
+ *
+ * @author Dane MacMillan <work@danemacmillan.com>
+ *
+ * @package CanadasMotorcycle
  */
 $(document).ready(function($) {
     // 'Cause I'm a badass.
@@ -10,17 +14,33 @@ $(document).ready(function($) {
      * graceful degradation. Essentially, the submit buttons will be hidden,
      * because they will be automatically submitted when JS is available.
      */
-    var hasJs = (function() {
+    var hasJs = (function()
+    {
         $(document.body).addClass('js');
     }());
 
     /**
-     * Submit quantity updates asynchronously with JS, when available.
+     * Handle clicks to the checkout button. Note: Easter egg.
      */
-    var updateAsync = (function() {
+    var checkoutMessage = (function()
+    {
+        $('#button-checkout').on('click', function(e) {
+            $('#feedback')
+                .addClass('success')
+                .html('<iframe width="420" height="315" src="//www.youtube.com/embed/kIfOjkB17BA?autoplay=1" frameborder="0" allowfullscreen></iframe>');
 
+            setTimeout(function() {
+                $('#feedback').removeClass('success');
+            }, 16000);
+        })
+    }());
+
+    /**
+     * Submit cart quantity updates asynchronously with JS, when available.
+     */
+    var updateAsync = (function()
+    {
         $('input[name=quantity]').on('input', function(e) {
-
             // Grab relevant form vars.
             var $form = $(this).closest('form'),
                 formAction = $form.attr('action').trim(),
@@ -51,14 +71,17 @@ $(document).ready(function($) {
                 $cartTotal.html(data.cart_total);
             })
             .fail(function(data) {
-
+                $('#feedback')
+                    .addClass('error')
+                    .html('<i class="fa fa-exclamation-triangle"></i> Oops, there was an error doing that!');
             })
             .always(function(data) {
-
+                setTimeout(function() {
+                    $('#feedback').removeClass('error');
+                }, 5000);
             });
         });
     }());
-
 
     /**
      * Make sure the cart's wallet on the right follows as you scroll.
