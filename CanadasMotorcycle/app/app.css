@@ -207,6 +207,7 @@ footer {
     padding: 0;
     overflow: hidden;
     box-shadow: 0 0 1px 0 #efefef;
+    width: 100%;
 }
 
 .cart-bag {
@@ -282,7 +283,6 @@ footer {
     box-shadow: -4px 0 4px -4px rgba(0, 0, 0, 0.05), inset 5px 0 5px -6px rgba(0, 0, 0, 0.20);
     background-color: rgba(255, 255, 255, 0.40);
     text-shadow: 0 0 2px #fff;
-
 }
 
 /* Triangle to point to totals and counts. */
@@ -332,4 +332,24 @@ footer {
 .error-note {
     font-size: 1.2rem;
     text-shadow: 0 0 5px #fff;
+}
+
+@media (max-width: 768px)
+{
+    .cart-bag {
+        width: 100%;
+    }
+
+    .cart-wallet {
+        width: 100%;
+        position: static !important;
+    }
+
+    #follow-bar {
+        position: static !important;
+    }
+
+    #follow-bar:before {
+        display: none;
+    }
 }
