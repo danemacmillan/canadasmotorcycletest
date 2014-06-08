@@ -114,7 +114,7 @@ class App
                 case 'update':
                     if ($this->handleUpdateCartQuantityPost()) {
                         if ($this->isXhr) {
-                            echo json_encode($this->view->provisionView(true));
+                            echo json_encode($this->view->provisionView(false));
                         } else {
                             $this->redirect('?cart');
                         }

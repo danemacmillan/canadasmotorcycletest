@@ -120,11 +120,11 @@ class View
      * In addition, this is called as the payload for asynchronous JSON
      * responses. Its return just needs to be encoded properly.
      *
-     * @param bool $noBag If true, 'cart_bag' will be removed from array.
+     * @param bool $addBag If true, 'cart_bag' will be removed from array.
      *
      * @return array
      */
-    public function provisionView($noBag = false)
+    public function provisionView($addBag = true)
     {
         $model = new Model();
         $cartData = $model->getCartData(App::$userID);
@@ -136,8 +136,10 @@ class View
         );
 
         // Not necessary for all calls.
-        if (!$noBag) {
+        if ($addBag) {
             $viewData['cart_bag'] = $this->buildHtmlProductList($cartData);
+        } elseif (isset($this->viewData['cart_bag'])) {
+            unset($this->viewData['cart_bag']);
         }
 
         // Set these first pieces of data.
