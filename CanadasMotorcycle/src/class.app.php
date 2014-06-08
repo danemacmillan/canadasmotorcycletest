@@ -16,13 +16,16 @@ namespace CanadasMotorcycle;
  */
 class App
 {
+    // Properties //
+
+
     /**
-     * @var $dispatcherWhitelist Whitelist of available dispatcher endpoints.
+     * @var array $dispatcherWhitelist Whitelist of available dispatcher endpoints.
      */
     private $dispatcherWhitelist;
 
     /**
-     * @var $isXhr Determine if requests is an XMLHttpRequest (asynchronous).
+     * @var bool $isXhr Determine if requests is an XMLHttpRequest (asynchronous).
      */
     private $isXhr;
 
@@ -32,7 +35,7 @@ class App
     private $model;
 
     /**
-     * @var $requestMethod Method of the current request.
+     * @var string $requestMethod Method of the current request.
      */
     private $requestMethod;
 
@@ -45,6 +48,10 @@ class App
      * @var View $view The View object.
      */
     private $view;
+
+
+    // Methods //
+
 
     /**
      * Get things rolling.
@@ -160,6 +167,8 @@ class App
     }
 
     /**
+     * Helper method to save from typing awkward location calls.
+     *
      * @param string $location Location to redirect to.
      */
     public function redirect($location)
@@ -191,6 +200,9 @@ class App
         return $requestData;
     }
 
+    /**
+     * Fire up the app.
+     */
     public function start()
     {
         $this->dispatcher();

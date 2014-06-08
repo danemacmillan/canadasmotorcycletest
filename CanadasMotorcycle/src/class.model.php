@@ -38,7 +38,7 @@ class Model
     private $dbConnection;
 
     /**
-     * @var string Name of database.
+     * @var string $dbName Name of database.
      */
     private $dbName;
 
@@ -53,7 +53,7 @@ class Model
     private $dbUser;
 
     /**
-     * @var string #tableNameCart The name of the cart table.
+     * @var string $tableNameCart The name of the cart table.
      */
     private $tableNameCart;
 
@@ -121,7 +121,7 @@ class Model
     }
 
     /**
-     * Create a connection to the database.
+     * Create a connection to the database, and save it for reuse.
      */
     private function connect()
     {
@@ -210,6 +210,7 @@ class Model
      * period for separator between dollars and cents.
      *
      * @param float $price The cost of something.
+     *
      * @return float
      */
     private function formatPrice($price)
@@ -223,6 +224,10 @@ class Model
 
     /**
      * Return all the data in a cart for a user.
+     *
+     * @param int $userID The user ID.
+     *
+     * @return array
      */
     public function getCartData($userID)
     {
@@ -358,28 +363,28 @@ class Model
             // purposes of this test, DATA IS NEEDED!
             $products = array(
                 array(
-                    ':name' => 'Shoei RF-1200',
-                    ':description' => 'Light Weight Multi-Ply Matrix AIM+ Shell Construction',
-                    ':price' => 512.99,
-                    ':image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/330x/9df78eab33525d08d6e5fb8d27136e95/0070/3837/shoei_rf1200_helmet_solid_black_rollover.jpg'
+                    'name' => 'Shoei RF-1200',
+                    'description' => 'Light Weight Multi-Ply Matrix AIM+ Shell Construction',
+                    'price' => 512.99,
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/330x/9df78eab33525d08d6e5fb8d27136e95/0070/3837/shoei_rf1200_helmet_solid_black_rollover.jpg'
                 ),
                 array(
-                    ':name' => 'Alpinestars S-MX 5 Boots',
-                    ':description' => 'Durable, high-tech micro-fiber upper construction offering a high level of flexibility.',
-                    ':price' => 249.99,
-                    ':image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_861.jpg'
+                    'name' => 'Alpinestars S-MX 5 Boots',
+                    'description' => 'Durable, high-tech micro-fiber upper construction offering a high level of flexibility.',
+                    'price' => 249.99,
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_861.jpg'
                 ),
                 array(
-                    ':name' => 'Alpinestars Bionic Air Back Protector Insert',
-                    ':description' => 'Alpinestars Bionic Air Back Protector Insert',
-                    ':price' => 89.96,
-                    ':image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/small_image/330x/9df78eab33525d08d6e5fb8d27136e95/2/0/2011-Alpinestars-Bionic-Air-Back-Protector-Insert-Black.jpg'
+                    'name' => 'Alpinestars Bionic Air Back Protector Insert',
+                    'description' => 'Alpinestars Bionic Air Back Protector Insert',
+                    'price' => 89.96,
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/small_image/330x/9df78eab33525d08d6e5fb8d27136e95/2/0/2011-Alpinestars-Bionic-Air-Back-Protector-Insert-Black.jpg'
                 ),
                 array(
-                    ':name' => 'Alpinestars GP Plus R Leather Jacket',
-                    ':description' => 'A superbly styled sport riding garment featuring a multi-panel chassis with premium leather and extensive stretch paneling.',
-                    ':price' => 449.96,
-                    ':image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/330x/9df78eab33525d08d6e5fb8d27136e95/0079/2470/alpinestars_gp_plus_r_leather_jacket_rollover.jpg'
+                    'name' => 'Alpinestars GP Plus R Leather Jacket',
+                    'description' => 'A superbly styled sport riding garment featuring a multi-panel chassis with premium leather and extensive stretch paneling.',
+                    'price' => 449.96,
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/330x/9df78eab33525d08d6e5fb8d27136e95/0079/2470/alpinestars_gp_plus_r_leather_jacket_rollover.jpg'
                 )
             );
 
@@ -491,7 +496,9 @@ class Model
         }
 
         if (!$tablesCreated || !$tablesPopulated) {
-            trigger_error("The app's database tables could not be setup", E_USER_NOTICE);
+            trigger_error('There is a problem accessing the database.
+            Either the relevant tables cannot be created and populated, or you
+            do not have the access credentials.', E_USER_NOTICE);
         }
     }
 

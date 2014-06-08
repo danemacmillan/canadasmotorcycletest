@@ -240,7 +240,7 @@ footer {
 }
 
 .cart-product-list li:hover {
-    box-shadow: 0 4px 10px -8px rgba(0, 0, 0, 0.50);
+    box-shadow: 0 4px 10px -10px rgba(0, 0, 0, 0.50);
 }
 
 .cart-product-list img {
@@ -283,6 +283,7 @@ footer {
     box-shadow: -4px 0 4px -4px rgba(0, 0, 0, 0.05), inset 5px 0 5px -6px rgba(0, 0, 0, 0.20);
     background-color: rgba(255, 255, 255, 0.40);
     text-shadow: 0 0 2px #fff;
+    overflow: hidden;
 }
 
 /* Triangle to point to totals and counts. */
@@ -327,12 +328,27 @@ footer {
 .cart-total-big strong {
     font-size: 1.8rem;
     font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* When prices change, make the grab total POP! */
+.cart-total-big.make-it-pop-like-its-95-wed-design,
+.cart-total-big.make-it-pop-like-its-95-wed-design strong {
+    /*font-size: 3.0rem !important;*/
+    -webkit-transform: scale(1.20);
+    transform: scale(1.10);
+    text-shadow: 0 0 10px #ffff00 !important;
 }
 
 .error-note {
     font-size: 1.2rem;
     text-shadow: 0 0 5px #fff;
 }
+
+
+/**
+ * Media queries for smaller viewports.
+ */
 
 @media (max-width: 768px)
 {
@@ -350,6 +366,48 @@ footer {
     }
 
     #follow-bar:before {
+        margin: 0 0 0 -30px;
+        left: 50%;
+        border-width: 20px 30px 0 30px;
+        border-color: #fff transparent transparent transparent;
+    }
+
+}
+
+@media (max-width: 510px)
+{
+    html {
+        font-size: 60%;
+    }
+    body {
+        padding: 0 20px;
+    }
+
+    header {
+        margin: 40px 0;
+    }
+
+    .logo {
+        display: block;
+        float: none;
+        margin: auto;
+    }
+
+    .logo-subtext {
         display: none;
+    }
+
+    .cart-product-list img {
+        display: block;
+        float: none;
+        width: 100%;
+        padding: 0;
+        margin: 0 auto 40px auto;
+        -webkit-transform: none !important;
+        transform: none !important;
+    }
+
+    .cart-product-list h3 {
+        clear: both;
     }
 }

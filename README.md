@@ -51,7 +51,9 @@ deliberately dropped support for IE6/7/8. See note below.
 handling asynchronous requests.
 
 - The side panel was designed to follow the user on screen, so that the prices
-are always in view. This is a great UX pattern for shopping carts.
+are always in view. This is a great UX pattern for shopping carts. In addition,
+the grand total will "pop," as a nice UX touch to subtly draw focus to the
+most important piece of data that changed.
 
 - The UI was designed to be very fresh feeling, spacious, and generally easy to
 look at. In addition, the markup is written very semantically, so that users
@@ -60,6 +62,8 @@ for SEO purposes. The DOCTYPE in use is HTML5, which means it can be very
 loose with validation; regardless, I've written it to be like valid XHTML5,
 which is a less common hybrid of XHTML 1.1 strict and HTML5. The CSS makes
 use of transitions and other version 3 eye candy.
+
+- The design is very mobile friendly and accessible by all viewports.
 
 - This was not tested in IE, and for the purposes of this test demo, I could
 care less about it. Nevertheless, it should work just fine down to IE6

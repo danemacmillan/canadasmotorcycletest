@@ -16,7 +16,7 @@ spl_autoload_register(function ($class)
     // Check class for namespace prefix.
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
-        // no, move to the next registered autoloader
+        // If nothing, return, so other loaders can start, if any.
         return;
     }
 

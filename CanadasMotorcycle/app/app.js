@@ -70,6 +70,9 @@ $(document).ready(function($) {
                 $cartGst.html(data.cart_gst);
                 $cartQst.html(data.cart_qst);
                 $cartTotal.html(data.cart_total);
+
+                // Make the grand total pop, as the armchair design critics say.
+                $('.cart-total-big').addClass('make-it-pop-like-its-95-wed-design');
             })
             .fail(function(data) {
                 $('#feedback')
@@ -80,6 +83,10 @@ $(document).ready(function($) {
                 setTimeout(function() {
                     $('#feedback').removeClass('error');
                 }, 5000);
+
+                setTimeout(function() {
+                    $('.cart-total-big').removeClass('make-it-pop-like-its-95-wed-design');
+                }, 400);
             });
         });
     }());
