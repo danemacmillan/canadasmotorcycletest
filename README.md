@@ -77,7 +77,8 @@ should be just fine. Every other popular browser was successfully tested
 
 Feel free to ask about any technical decisions I made regarding the inclusion
 or exclusion of some technique or process. I assure you everything was very
-deliberate, and can answer any criticism.
+deliberate. In addition, I can answer any questions about where and how I would
+improve this code in preparation for true production service.
 
 ---
 
