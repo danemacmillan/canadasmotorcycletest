@@ -114,7 +114,7 @@ class App
                 case 'update':
                     if ($this->handleUpdateCartQuantityPost()) {
                         if ($this->isXhr) {
-                            echo json_encode($this->view->provisionView(false));
+                            $this->sendJson($this->view->provisionView(false));
                         } else {
                             $this->redirect('?cart');
                         }
@@ -198,6 +198,18 @@ class App
         }
 
         return $requestData;
+    }
+
+    /**
+     * Helper to send JSON-encoded data to client.
+     *
+     * @param array $jsonDump Array of data to encode and send as JSON.
+     */
+    private function sendJson($jsonDump)
+    {
+        header('Content-Type: application/json');
+        echo json_encode($jsonDump);
+        exit;
     }
 
     /**

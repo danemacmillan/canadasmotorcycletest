@@ -483,7 +483,6 @@ class Model
         // Store table names.
         $this->tableNameProducts = $this->getFullTableName('products');
         $this->tableNameCart = $this->getFullTableName('cart');
-        $this->tableNameApp = $this->getFullTableName('app');
 
         // Open DB connection.
         $this->connect();
