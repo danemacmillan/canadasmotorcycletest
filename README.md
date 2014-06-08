@@ -73,6 +73,12 @@ should be just fine. Every other popular browser was successfully tested
 
 - There is a little Easter egg in the checkout process.
 
+## Feedback
+
+Feel free to ask about any technical decisions I made regarding the inclusion
+or exclusion of some technique or process. I assure you everything was very
+deliberate, and can answer any criticism.
+
 ---
 
 # About Dane MacMillan
