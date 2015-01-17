@@ -2,16 +2,24 @@
 
 The purpose of this test is to demonstrate coding ability.
 
+### UPDATE: Moved to GitHub for posterity (not in original README)
+
+I uploaded the content of this repository to be preserved for posterity. It
+was my interpretation of a cart exercise that was given to me. I landed the
+job. I made updates to the code on January 17th, 2015 (about 8 months later)
+because some asset URLs were no longer valid. The Git commit history shows the
+work during progress.
+
 ## How to install
 
 You don't really need to install this. A working demo is available at
 https://hack.danemacmillan.com/canadasmotorcycletest. However, should you
-really want to install this, all you need to do is clone this repo, expose
+want to install this, all you need to do is clone this repo, expose
 the `app` directory to the public on your server, and create a database in
-MySQL/Percona/MariaDB called `canadas_motorcycle`. When you first visit the
-`index.php` page, the dispatcher will take care of setting up the database
-tables--one for `products` and one for `cart`--and populating them with
-test data.
+MySQL/Percona/MariaDB called `canadas_motorcycle` with user `cm` and an empty
+password. When you first visit the `index.php` page, the dispatcher will take
+care of setting up the database tables--one for `products` and one for 
+`cart`--and populating them with test data.
 
 ## Requirements
 
