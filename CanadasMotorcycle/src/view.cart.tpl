@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="app.js"></script>
-        <link rel="shortcut icon" href="//www.canadasmotorcycle.ca/skin/frontend/default/evolution/favicon.ico">
+        <link rel="shortcut icon" href="//www.canadasmotorcycle.ca/skin/frontend/creation/default/favicon.ico">
     </head>
 
     <body>
