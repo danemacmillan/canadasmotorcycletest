@@ -5,10 +5,10 @@ The purpose of this test is to demonstrate coding ability.
 ### UPDATE: Moved to GitHub for posterity (not in original README)
 
 I uploaded the content of this repository to be preserved for posterity. It
-was my interpretation of a cart exercise that was given to me. I landed the
-job. I made updates to the code on January 17th, 2015 (about 8 months later)
-because some asset URLs were no longer valid. The Git commit history shows the
-work during progress.
+was my interpretation of a cart exercise that was given to me in June 2014.
+I landed the job. I made updates to the code on January 17th, 2015
+(about 8 months later) because some asset URLs were no longer valid. The Git
+commit history shows the progression of the exercise.
 
 ## How to install
 
