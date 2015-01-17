@@ -366,25 +366,25 @@ class Model
                     'name' => 'Shoei RF-1200',
                     'description' => 'Light Weight Multi-Ply Matrix AIM+ Shell Construction',
                     'price' => 512.99,
-                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/330x/9df78eab33525d08d6e5fb8d27136e95/0070/3837/shoei_rf1200_helmet_solid_black_rollover.jpg'
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/0070/3837/shoei_rf1200_helmet_solid_black_rollover.jpg'
                 ),
                 array(
                     'name' => 'Alpinestars S-MX 5 Boots',
                     'description' => 'Durable, high-tech micro-fiber upper construction offering a high level of flexibility.',
                     'price' => 249.99,
-                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/i/m/image_861.jpg'
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/i/m/image_861.jpg'
                 ),
                 array(
                     'name' => 'Alpinestars Bionic Air Back Protector Insert',
                     'description' => 'Alpinestars Bionic Air Back Protector Insert',
                     'price' => 89.96,
-                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/small_image/330x/9df78eab33525d08d6e5fb8d27136e95/2/0/2011-Alpinestars-Bionic-Air-Back-Protector-Insert-Black.jpg'
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/2/0/2011-Alpinestars-Bionic-Air-Back-Protector-Insert-Black.jpg'
                 ),
                 array(
                     'name' => 'Alpinestars GP Plus R Leather Jacket',
                     'description' => 'A superbly styled sport riding garment featuring a multi-panel chassis with premium leather and extensive stretch paneling.',
                     'price' => 449.96,
-                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/cache/1/image/330x/9df78eab33525d08d6e5fb8d27136e95/0079/2470/alpinestars_gp_plus_r_leather_jacket_rollover.jpg'
+                    'image_url' => '//www.canadasmotorcycle.ca/media/catalog/product/0079/2470/alpinestars_gp_plus_r_leather_jacket_rollover.jpg'
                 )
             );
 
