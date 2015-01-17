@@ -61,7 +61,7 @@
 
         <footer>
             <p>Test cart by <a href="https://danemacmillan.com">Dane MacMillan</a> &copy; 2014</p>
-            <p><a href="https://bitbucket.org/danemacmillan/canadasmotorcycletest">View git repo on Bitbucket</a></p>
+            <p><a href="https://github.com/danemacmillan/canadasmotorcycletest">View git repo on GitHub</a></p>
             <p>&middot;</p>
             <p class="error-note">
                 <strong>Note</strong>: for the purposes of this demonstration, you can trigger
