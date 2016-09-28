@@ -5,7 +5,7 @@ The purpose of this test is to demonstrate coding ability.
 ### UPDATE: Moved to GitHub for posterity (not in original README)
 
 I uploaded the content of this repository to be preserved for posterity. It
-was my interpretation of a cart exercise that was given to me in June 2014.
+was my interpretation of a shopping cart that I provided in June 2014.
 I landed the job. I made updates to the code on January 17th, 2015
 (about 8 months later) because some asset URLs were no longer valid. The Git
 commit history shows the progression of the exercise.
@@ -18,7 +18,7 @@ want to install this, all you need to do is clone this repo, expose
 the `app` directory to the public on your server, and create a database in
 MySQL/Percona/MariaDB called `canadas_motorcycle` with user `cm` and an empty
 password. When you first visit the `index.php` page, the dispatcher will take
-care of setting up the database tables--one for `products` and one for 
+care of setting up the database tables--one for `products` and one for
 `cart`--and populating them with test data.
 
 ## Requirements
